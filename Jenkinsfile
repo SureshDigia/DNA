@@ -9,6 +9,7 @@ fullPath=path + srcDir
   new File(path + srcDir+"/").eachFile() { file ->
       apiList << file.toString()
       fullPath = file.toString().substring(path.length() + srcDir.length())
+      println fullPath
       println file.toString().substring(path.length() + srcDir.length())
     }
 }
