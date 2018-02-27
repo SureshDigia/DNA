@@ -2,7 +2,7 @@ import groovy.io.FileType
 
 srcDir = '/JSONFiles'
 apiList = []
-fullPath = ''
+env.fullPath = ''
 
 def populateJSONList(path) {
 fullPath=path + srcDir
