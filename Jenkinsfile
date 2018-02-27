@@ -32,6 +32,6 @@ node {
                 "echo $jsonFileName"   
                 "echo ${jsonFileName}"       
 		token=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
-		curl -k -H "Authorization: Bearer $token" -H "Content-Type: application/json" -X POST -d @"/home/wls/.jenkins/workspace/DNAPipeline/JSONFiles/createDEMO.json" https://localhost:9443/api/am/publisher/v0.11/apis'''
+		curl -k -H "Authorization: Bearer $token" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}${jsonFileName} https://localhost:9443/api/am/publisher/v0.11/apis'''
     }
 }
