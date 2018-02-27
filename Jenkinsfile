@@ -22,7 +22,7 @@ node {
     stage('Create API'){
     populateJSONList(WORKSPACE)
 
-    sh echo $jsonFileName
+    sh "echo $jsonFileName"
     sh "echo ${jsonFileName}"
 
     sh ''' cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
