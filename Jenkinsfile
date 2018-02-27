@@ -9,7 +9,6 @@ def populateJSONList(path) {
       apiList << file.toString()
       jsonFileName = file.toString().substring(path.length() + srcDir.length())
       println jsonFileName
-      println file.toString().substring(path.length() + srcDir.length())
     }
 }
 
@@ -25,8 +24,11 @@ node {
     sh "echo $jsonFileName"
     sh "echo ${jsonFileName}"
 
-    temp = sh 'curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\''
+    cid = sh 'curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\''
+    cs = sh 'curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\''
+    encodeClient="$(echo -n $cid:$cs | base64)"
 
+   
     sh ''' cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 	   cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 	   encodeClient="$(echo -n $cid:$cs | base64)"
