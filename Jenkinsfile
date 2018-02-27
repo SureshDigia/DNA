@@ -1,3 +1,15 @@
+import groovy.io.FileType
+
+srcDir = "/JSONFiles/"
+apiList = []
+
+def populateJSONList(path) {
+  new File(path + srcDir).eachFile() { file ->
+      apiList << file.toString()
+      println file.toString().substring(path.length() + srcDir.length())
+    }
+}
+
 node {
 
     stage('Checkout'){
@@ -5,6 +17,7 @@ node {
     }
 
     stage('Create API'){
+    populateJSONList(WORKSPACE)
     sh ''' cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 		encodeClient="$(echo -n $cid:$cs | base64)"
