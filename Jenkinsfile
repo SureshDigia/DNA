@@ -1,7 +1,7 @@
 import groovy.io.FileType
 
 srcDir = '/JSONFiles'
-def apiList = []
+apiList = []
 
 def populateJSONList(path) {
   new File(path + srcDir+"/").eachFileRecurse(FileType.FILES) { file ->
