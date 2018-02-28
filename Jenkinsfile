@@ -8,7 +8,6 @@ def populateJSONList(path) {
       apiList << file.toString()
       env.jsonFileName = file.toString().substring(path.length() + srcDir.length())
       println jsonFileName
-      println $jsonFileName
     }
 }
 
