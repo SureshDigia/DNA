@@ -20,7 +20,7 @@ node {
     for (String item : lines) {
 		//env.jsonFileName = item.toString().substring(WORKSPACE.length())
                 if(item.toString().startsWith("JSONFiles/")) {
-		env.jsonFileName = item.toString()
+		env.jsonFileName = '/'+item.toString()
 		sh '''#!/bin/bash
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       Creating clientId and clientSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
