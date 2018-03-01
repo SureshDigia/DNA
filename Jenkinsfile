@@ -18,11 +18,10 @@ node {
     }
     
     stage('Create API'){
-    tar cvzf /tmp/build.tar.gz 'git diff --stat $GIT_PREVIOUS_COMMIT $GIT_COMMIT | grep '\|' | awk '{print $1}''
 
     sh 'env'
-    sh "git diff --name-only env.GIT_PREVIOUS_COMMIT env.GIT_COMMIT"
-    sh "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}"
+    sh 'git diff HEAD'
+    
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
 		env.jsonFileName = item.toString().substring(WORKSPACE.length())
