@@ -1,5 +1,5 @@
 {
-   "name": "GetQuantitiesFromStock",
+   "name": "GetQuantitiesFromStock_ep",
    "description": "Get Stock for DEMO",
    "context": "/getQuantitiesFromStock_ep_curl",
    "version": "1.1.0",

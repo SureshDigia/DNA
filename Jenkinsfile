@@ -11,7 +11,7 @@ node {
 
     sh 'git diff --name-only HEAD HEAD~1 > latestChangedFiles.txt'
    
-      File file = new File(WORKSPACE+'/latestChangeFiles.txt')
+      File file = new File(WORKSPACE+'/latestChangedFiles.txt')
       def lines = file.readLines()
       println "${file} has ${lines.size()} lines of text"
       
