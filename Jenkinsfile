@@ -11,16 +11,11 @@ node {
 
     sh 'git diff --name-only HEAD HEAD~1 > latestChangeFiles.txt'
    
-      File file = new File(WORKSPACE+"/latestChangeFiles.txt")
-      println "Below is the content of the file ${file.absolutePath}"
-      def lineNo = 1
-      def line
-      file.withReader { reader ->
-         while ((line = reader.readLine())!=null) {
-            println "${lineNo}. ${line}"
-            lineNo++
-         }
-      }
+      File file = new File(WORKSPACE+'/latestChangeFiles.txt')
+      def lines = file.readLines()
+      println "${file} has ${lines.size()} lines of text"
+      println "Here is the first line: ${lines[0]}"
+      println "Here is the last line: ${lines[lines.size()-1]}"
     
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
