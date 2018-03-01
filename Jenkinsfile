@@ -9,18 +9,18 @@ node {
     
     stage('Create API'){
 
-    sh 'git diff --name-only HEAD HEAD~1 > latestChangeFiles.txt'
+    sh 'git diff --name-only HEAD HEAD~1 > latestChangedFiles.txt'
    
       File file = new File(WORKSPACE+'/latestChangeFiles.txt')
       def lines = file.readLines()
       println "${file} has ${lines.size()} lines of text"
-      println "Here is the first line: ${lines[0]}"
-      println "Here is the last line: ${lines[lines.size()-1]}"
+      
     
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
-    for (String item : files) {
-		env.jsonFileName = item.toString().substring(WORKSPACE.length())
-		
+    for (String item : lines) {
+		//env.jsonFileName = item.toString().substring(WORKSPACE.length())
+                if(item.toString().startsWith("JSONFiles/")) {
+		env.jsonFileName = item.toString()
 		sh '''#!/bin/bash
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       Creating clientId and clientSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
@@ -65,6 +65,7 @@ node {
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       Created file UpdateAPI.json to update API"
 		curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X PUT -d @UpdateAPI.json https://localhost:9443/api/am/publisher/v0.11/apis/$updateId
 		fi'''
+               }
+        }
     }
-  }
 }
