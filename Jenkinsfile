@@ -19,8 +19,8 @@ node {
     
     stage('Create API'){
 
-    sh 'env'
-    sh 'git diff HEAD'
+    sh 'git diff --name-only HEAD HEAD~1'
+
     
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
