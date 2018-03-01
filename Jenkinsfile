@@ -2,21 +2,31 @@ import groovy.io.FileType
 
 srcDir = '/JSONFiles'
 
+def checkFolderForDiffs(path) {
+  try {
+    sh "git diff --quiet --exit-code @~ HEAD ${path}"
+    return false
+  } catch (err) {
+    return true
+  }
+}
+
+
 node {
     stage('Checkout'){
       checkout scm
     }
-
+    sh "git diff --name-only $GIT_PREVIOUS_COMMIT $GIT_COMMIT"
     stage('Create API'){
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
 		env.jsonFileName = item.toString().substring(WORKSPACE.length())
 		println(item)
 		println jsonFileName
-
+                println checkFolderForDiffs(item)
 		
 		sh '''#!/bin/bash
-		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       Creating clientId and cleintSecret for ADMIN"
+		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       Creating clientId and clientSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
