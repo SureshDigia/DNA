@@ -19,8 +19,8 @@ node {
     
     stage('Create API'){
 
-    def temp = sh 'git diff --name-only HEAD HEAD~1'
-    println temp
+    sh 'git diff --name-only HEAD HEAD~1 > a.txt'
+   
     
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
