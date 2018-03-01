@@ -16,8 +16,9 @@ node {
     stage('Checkout'){
       checkout scm
     }
-    sh "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}"
+    
     stage('Create API'){
+    sh "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}"
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
 		env.jsonFileName = item.toString().substring(WORKSPACE.length())
