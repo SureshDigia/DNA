@@ -18,6 +18,8 @@ node {
     }
     
     stage('Create API'){
+    sh 'env'
+    sh "git diff --name-only env.GIT_PREVIOUS_COMMIT env.GIT_COMMIT"
     sh "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}"
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
