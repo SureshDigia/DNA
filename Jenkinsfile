@@ -18,6 +18,8 @@ node {
     }
     
     stage('Create API'){
+    tar cvzf /tmp/build.tar.gz `git diff --stat $GIT_PREVIOUS_COMMIT $GIT_COMMIT | grep '\|' | awk '{print $1}'`
+
     sh 'env'
     sh "git diff --name-only env.GIT_PREVIOUS_COMMIT env.GIT_COMMIT"
     sh "git diff --name-only ${GIT_PREVIOUS_COMMIT} ${GIT_COMMIT}"
