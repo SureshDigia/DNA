@@ -2,16 +2,6 @@ import groovy.io.FileType
 
 srcDir = '/JSONFiles'
 
-def checkFolderForDiffs(path) {
-  try {
-    sh "git diff --quiet --exit-code @~ HEAD ${path}"
-    return false
-  } catch (err) {
-    return true
-  }
-}
-
-
 node {
     stage('Checkout'){
       checkout scm
@@ -19,15 +9,12 @@ node {
     
     stage('Create API'){
 
-    sh 'git diff --name-only HEAD HEAD~1 > a.txt'
+    sh 'git diff --name-only HEAD HEAD~1 > latestChangeFiles.txt'
    
     
     List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
     for (String item : files) {
 		env.jsonFileName = item.toString().substring(WORKSPACE.length())
-		println(item)
-		println jsonFileName
-                println checkFolderForDiffs(item)
 		
 		sh '''#!/bin/bash
 		echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!       Creating clientId and clientSecret for ADMIN"
