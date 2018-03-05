@@ -37,8 +37,8 @@
    "businessInformation":    {
       "businessOwnerEmail": "marketing@dna.com",
       "technicalOwnerEmail": "architecture@dna.com",
-      "technicalOwner": "Lendl Gomes",
-      "businessOwner": "Leo Gomes"
+      "technicalOwner": "Suresh Gupta",
+      "businessOwner": "Suresh Gupta"
    },
    "corsConfiguration":    {
       "accessControlAllowOrigins": ["*"],
