@@ -39,7 +39,7 @@ node {
 
 		apisList=$(curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' )
 
-		createFile=`jq \'{name: .name , context: .context , version: .version}\' @${WORKSPACE}${jsonFileName}`
+		createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}${jsonFileName}`
 		newName="$(echo $createFile | jq -r \'.name\')"
 		newContext="$(echo $createFile | jq -r \'.context\')"
 		newVersion="$(echo $createFile | jq -r \'.version\')"
