@@ -13,7 +13,7 @@ node {
     File file = new File(WORKSPACE+'/latestChangedFiles.txt')
     def lines = file.readLines()
     println "${file} has ${lines.size()} lines of text"
-    List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
+    //List files = Arrays.asList(new File(WORKSPACE + srcDir).listFiles())
              for (String item : lines) {
 		//env.jsonFileName = item.toString().substring(WORKSPACE.length())
                 if(item.toString().startsWith("JSONFiles/")) {
@@ -80,6 +80,8 @@ node {
 
 		encodeClient="$(echo -n $cid:$cs | base64)"
                 tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
+		tokenView=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_view" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
+
 
                 delApi=`jq -r \'.id\' deleteAPI.json`
 
