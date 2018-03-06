@@ -101,7 +101,7 @@ node {
 			echo "**********************************************       API LIST is written to FetchedApis.json"
                         git add FetchedApis.json
                         git commit -m 'Commit FetchedApis.json file.'
-                        git push
+                        git push -u origin master
                         '''
 
          }
