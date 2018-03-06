@@ -101,7 +101,7 @@ node {
 			echo "**********************************************       API LIST is written to FetchedApis.json"
 
 			git status                        
-			git add FetchedApis.json
+			git add .
                         git commit -m 'Commit FetchedApis.json file.'
 			git config --global user.name "SureshDigia"
 			git config --global user.email suresh.gupta@digia.com
