@@ -103,11 +103,8 @@ node {
 			git remote set-url origin git@github.com:SureshDigia/DNA.git
 			git checkout master
 			git status                        
-			git add .
+			git add FetchedApis.json
                         git commit -m 'Commit FetchedApis.json file.'
-			git config --global user.name "SureshDigia"
-			git config --global user.email suresh.gupta@digia.com
-			
                         git push
                         '''
 
