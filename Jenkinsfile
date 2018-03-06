@@ -106,7 +106,7 @@ node {
 			git config --global user.name "SureshDigia"
 			git config --global user.email suresh.gupta@digia.com
 			git remote set-url origin git@github.com:SureshDigia/DNA.git
-                        git push -u origin master
+                        git push
                         '''
 
          }
