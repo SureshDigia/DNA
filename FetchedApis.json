@@ -1,0 +1,12 @@
+{
+  "id": "d27ec9c3-7c04-4d2a-9550-2a736e7ec1e6",
+  "name": "GetAssetDetailsService_ep",
+  "context": "/getAssetDetailsService_ep",
+  "version": "v1.0.0"
+}
+{
+  "id": "41ec307a-5fb6-4d6a-9373-c256a301294e",
+  "name": "GetAssetDetailsService_ep",
+  "context": "/getAssetDetailsService_ep",
+  "version": "v2.0.0"
+}
