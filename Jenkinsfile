@@ -9,6 +9,7 @@ node {
     
     stage('CreateAndUpdateAPI'){
     sh 'git diff --name-only HEAD HEAD~1 > latestChangedFiles.txt'
+    sh 'git pull --rebase'
     sh 'git checkout master'
    
     File file = new File(WORKSPACE+'/latestChangedFiles.txt')
