@@ -101,7 +101,7 @@ node {
 			echo "**********************************************       API LIST is written to FetchedApis.json"
 			
                         git remote set-url origin git@github.com:SureshDigia/DNA.git
-			git pull master
+			git pull origin master
                         git checkout master
 			git status                        
 			git add FetchedApis.json
