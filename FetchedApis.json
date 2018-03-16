@@ -9,4 +9,5 @@
   "name": "GetAssetDetailsService_ep",
   "context": "/getAssetDetailsService_ep",
   "version": "v2.0.0"
+
 }
