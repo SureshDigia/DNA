@@ -9,6 +9,7 @@ node {
     
     stage('CreateAndUpdateAPI'){
     sh 'git diff --name-only HEAD HEAD~1 > latestChangedFiles.txt'
+    sh 'git checkout master'
    
     File file = new File(WORKSPACE+'/latestChangedFiles.txt')
     def lines = file.readLines()
@@ -101,8 +102,6 @@ node {
 			echo "**********************************************       API LIST is written to FetchedApis.json"
 			
                         git remote set-url origin git@github.com:SureshDigia/DNA.git
-			git pull origin master
-                        git checkout master
 			git status                        
 			git add FetchedApis.json
                         git commit -m 'Commit FetchedApis.json file.'
