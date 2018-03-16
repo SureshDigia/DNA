@@ -9,8 +9,9 @@ node {
     
     stage('CreateAndUpdateAPI'){
     sh 'git diff --name-only HEAD HEAD~1 > latestChangedFiles.txt'
-    sh 'git pull'
     sh 'git checkout master'
+    sh 'git pull'
+
    
     File file = new File(WORKSPACE+'/latestChangedFiles.txt')
     def lines = file.readLines()
