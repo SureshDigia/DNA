@@ -101,8 +101,6 @@ node {
                         curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' > FetchedApis.json
 			echo "**********************************************       API LIST is written to FetchedApis.json"
 			
-                        git remote set-url origin git@github.com:SureshDigia/DNA.git
-			git checkout master
 			git status                        
 			git add FetchedApis.json
                         git commit -m 'Commit FetchedApis.json file.'
