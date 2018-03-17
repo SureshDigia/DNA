@@ -106,7 +106,7 @@ node {
                         git pull			
 			git status                        
 			git add FetchedApis.json latestChangedFiles.txt
-                        git commit -m 'Commit FetchedApis.json file.'
+                        git commit -m 'Commit FetchedApis.json and latestChangedFiles.txt file.'
                         git push origin HEAD:master			
                         '''
 
