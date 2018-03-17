@@ -102,7 +102,8 @@ node {
 
                         
 			git remote set-url origin git@github.com:SureshDigia/DNA.git
-			git checkout master			
+			git checkout master
+                        git pull			
 			git status                        
 			git add FetchedApis.json
                         git commit -m 'Commit FetchedApis.json file.'
