@@ -9,7 +9,7 @@ node {
     
     stage('CreateAndUpdateAPI'){
              
-			env.jsonFileName = "${API_NAME}"+'.json'
+			env.jsonFileName = '/'+"${API_NAME}"+'.json'
 			def api_status = "${API_STATUS}"
 			
                         if( api_status == 'New') {	
