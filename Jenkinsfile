@@ -63,7 +63,6 @@ node {
 				echo "**********************************************       Created file UpdateAPI.json to update API"
 				curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X PUT -d @UpdateAPI.json https://localhost:9443/api/am/publisher/v0.11/apis/$updateId
 				echo "**************************      UPDATE COMPLETED      ******************************"
-				fi
 				'''
                         }
 
