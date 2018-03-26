@@ -87,7 +87,7 @@ node {
 				echo $match | jq \'{id: .id}\' > updateId.json
 				deleteId="$(echo $match | jq -r \'.id\')"
 
-				deleteResp=$(curl -k -H "Authorization: Bearer $tokenCreatel" -X DELETE https://localhost:9443/api/am/publisher/v0.11/apis/$deleteId)
+				deleteResp=$(curl -k -H "Authorization: Bearer $tokenCreate" -X DELETE https://localhost:9443/api/am/publisher/v0.11/apis/$deleteId)
 				if [ -n "$deleteResp" ]
 				then
 				echo "**********************************************       Error: $deleteResp"
