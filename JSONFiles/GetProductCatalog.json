@@ -1,11 +1,11 @@
 {
-   "name": "GetCustomerInformation",
-   "description": "Get customer information DNA API",
-   "context": "/getCustomerInformation",
+   "name": "GetProductCatalog",
+   "description": "Get ProductCatalog DNA API",
+   "context": "/getProductCatalog",
    "version": "v1.0.0",
    "provider": "admin",
    "apiDefinition":"{\"paths\":{\"/*\":{\"post\":{\"parameters\":[{\"schema\":{\"type\":\"string\"},\"description\":\"SOAP request.\",\"name\":\"SOAP Request\",\"required\":true,\"in\":\"body\"},{\"description\":\"SOAPAction header for soap 1.1\",\"name\":\"SOAPAction\",\"type\":\"string\",\"required\":false,\"in\":\"header\"}],\"responses\":{\"200\":{\"description\":\"OK\"}},\"x-auth-type\":\"Application & Application User\",\"x-throttling-tier\":\"Unlimited\"}}},\"swagger\":\"2.0\",\"consumes\":[\"text/xml\",\"application/soap+xml\"],\"produces\":[\"text/xml\",\"application/soap+xml\"],\"info\":{\"title\":\"DNA\",\"version\":\"1.0\",\"description\":\"DNA WSDL\"}}",
-   "wsdlUri": "http://dildev1-node2.s.dnaip.fi:8201/dnaosb/service/GetCustomerInformation/dnaosb/service/GetCustomerInformation?wsdl",
+   "wsdlUri": "http://dil-osb-test1.dna.fi/dnaosb/GetProductCatalog?wsdl",
    "responseCaching": "Disabled",
    "cacheTimeout": 300,
    "destinationStatsEnabled": false,
@@ -15,7 +15,7 @@
       "http",
       "https"
    ],
-   "tags": ["GetCustomerInformation"],
+   "tags": ["GetProductCatalog"],
    "tiers": ["Gold"],
    "maxTps":    {
       "sandbox": 5000,
@@ -24,7 +24,7 @@
    "visibility": "PUBLIC",
    "visibleRoles": [],
    "visibleTenants": [],
-   "endpointConfig": "{\"production_endpoints\":{\"url\":\"http://dildev1-node2.s.dnaip.fi:8201/dnaosb/service/GetCustomerInformation/dnaosb/service/GetCustomerInformation\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"http://dildev1-node2.s.dnaip.fi:8201/dnaosb/service/GetCustomerInformation/dnaosb/service/GetCustomerInformation\",\"config\":null},\"endpoint_type\":\"http\"}",
+   "endpointConfig": "{\"production_endpoints\":{\"url\":\"http://dil-osb-test1.dna.fi/dnaosb/GetProductCatalog\",\"config\":null},\"sandbox_endpoints\":{\"url\":\"http://dil-osb-test1.dna.fi/dnaosb/GetProductCatalog\",\"config\":null},\"endpoint_type\":\"http\"}",
    "endpointSecurity":    {
       "username": "dna_dsg",
       "type": "basic",

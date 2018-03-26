@@ -15,7 +15,7 @@
       "http",
       "https"
    ],
-   "tags": ["Stocks","Codes"],
+   "tags": ["GetITSMDeviceInstancesService"],
    "tiers": ["Gold"],
    "maxTps":    {
       "sandbox": 5000,
