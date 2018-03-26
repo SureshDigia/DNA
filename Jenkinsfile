@@ -56,7 +56,8 @@ node {
 				updateId="$(echo $match | jq -r \'.id\')"
 				echo $updateId
 				echo "**************************      EXECUTING UPDATE      ******************************"
-				createFileForUpdate=`jq  -s add updateId.json @${WORKSPACE}${jsonFileName}`
+				createFileForUpdate=`jq  -s add updateId.json ${WORKSPACE}${jsonFileName}`
+				
 
 				echo $createFileForUpdate > UpdateAPI.json
 				echo "**********************************************       Created file UpdateAPI.json to update API"
