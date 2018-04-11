@@ -8,8 +8,6 @@ node {
     }
     
     stage('CreateAndUpdateAPI'){
-             
-			env.jsonFileName = '/JSONFiles/'+"${API_NAME}"+'.json'
 			def api_status = "${API_STATUS}"
 			
                         if( api_status == 'New') {	
@@ -32,7 +30,7 @@ node {
 				tokenView=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_view" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 				tokenPublish=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_publish" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 				apisList=$(curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' )
-				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}${jsonFileName}`
+				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/JSONFiles/${API_NAME}.json"`
 				newName="$(echo $createFile | jq -r \'.name\')"
 				newContext="$(echo $createFile | jq -r \'.context\')"
 				newVersion="$(echo $createFile | jq -r \'.version\')"
