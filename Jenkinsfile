@@ -16,13 +16,9 @@ node {
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
 				encodeClient="$(echo -n $cid:$cs | base64)"
-
-				echo "**********************************************       Client encoded with code : ${encodeClient}"
-
 				tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 
 				echo "**************************      CREATING API      ******************************"
-                                echo "/JSONFiles/${API_NAME}.json"
 				curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}"/JSONFiles/${API_NAME}.json" https://localhost:9443/api/am/publisher/v0.11/apis
 				echo "**************************      API CREATED    ******************************"
 				
@@ -47,28 +43,22 @@ node {
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
 				encodeClient="$(echo -n $cid:$cs | base64)"
-
-				echo "**********************************************       Client encoded with code : ${encodeClient}"
-
 				tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 				tokenView=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_view" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 
 				apisList=$(curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' )
 
-				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}${jsonFileName}`
+				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/JSONFiles/${API_NAME}.json"`
 				newName="$(echo $createFile | jq -r \'.name\')"
 				newContext="$(echo $createFile | jq -r \'.context\')"
 				newVersion="$(echo $createFile | jq -r \'.version\')"
-
-				echo "**********************************************       CreateFile is ${createFile}"
-
 				match="$(echo $apisList | jq  --arg creName "$newName" --arg creCon "$newContext" --arg creVer "$newVersion"  \'select((.name==$creName) and (.context==$creCon)  and (.version==$creVer))\')"
 
 				echo $match | jq \'{id: .id}\' > updateId.json
 				updateId="$(echo $match | jq -r \'.id\')"
 				echo $updateId
 				echo "**************************      EXECUTING UPDATE      ******************************"
-				createFileForUpdate=`jq  -s add updateId.json ${WORKSPACE}${jsonFileName}`
+				createFileForUpdate=`jq  -s add updateId.json ${WORKSPACE}"/JSONFiles/${API_NAME}.json"`
 				
 
 				echo $createFileForUpdate > UpdateAPI.json
@@ -88,13 +78,10 @@ node {
 				tokenView=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_view" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
 				apisList=$(curl -k -H "Authorization: Bearer $tokenView" https://localhost:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\' )
 
-				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}${jsonFileName}`
+				createFile=`jq \'{name: .name , context: .context , version: .version}\' ${WORKSPACE}"/JSONFiles/${API_NAME}.json"`
 				newName="$(echo $createFile | jq -r \'.name\')"
 				newContext="$(echo $createFile | jq -r \'.context\')"
 				newVersion="$(echo $createFile | jq -r \'.version\')"
-
-				echo "**********************************************       CreateFile is ${createFile}"
-
 				match="$(echo $apisList | jq  --arg creName "$newName" --arg creCon "$newContext" --arg creVer "$newVersion"  \'select((.name==$creName) and (.context==$creCon)  and (.version==$creVer))\')"
 				echo $match | jq \'{id: .id}\' > updateId.json
 				deleteId="$(echo $match | jq -r \'.id\')"
