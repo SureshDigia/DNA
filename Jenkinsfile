@@ -58,8 +58,7 @@ node {
                
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
-		echo "{$publishEnv}"
-		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://"{$publishEnv}":9443/client-registration/v0.11/register | jq -r \'.clientId\')
+		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
 		encodeClient="$(echo -n $cid:$cs | base64)"
