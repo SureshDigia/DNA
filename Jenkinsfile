@@ -56,7 +56,7 @@ node {
     }
     
     stage('CreateAndUpdateAPI'){
-	def api_status = "${API_STATUS}"
+	def api_action = "${API_ACTION}"
 	def publishEnv
 	def envFile = new File("${WORKSPACE}"+'/Env.json')
 	def jsonSlurper = new JsonSlurper()
@@ -78,7 +78,7 @@ node {
            publishEnv = jsonObject.prod
         }
                         
-	if( api_status == 'New') {	
+	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		echo "{$publishEnv}"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://"{$publishEnv}":9443/client-registration/v0.11/register | jq -r \'.clientId\')
@@ -106,7 +106,7 @@ node {
 		'''
           }
 
-                        if( api_status == 'Update') {	
+                        if( api_action == 'Update') {	
 				sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 				cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
@@ -138,7 +138,7 @@ node {
                         }
 
 
-                        if( api_status == 'Delete') {	
+                        if( api_action == 'Delete') {	
 				sh '''echo "**********************************************       Deleting API ${delApi}"    
 				cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
