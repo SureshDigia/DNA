@@ -22,7 +22,7 @@ node {
 
 	jsonObject.name = "${API_NAME}"
 	jsonObject.context = context
-	jsonObject.description = ${API_DESCRIPTION}"
+	jsonObject.description = "${API_DESCRIPTION}"
 	jsonObject.version = versionWithEnv
 	jsonObject.wsdlUri= "${WSDL_LOC}"
 	
