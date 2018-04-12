@@ -1,5 +1,6 @@
 import groovy.io.FileType
 import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput 
 
@@ -33,11 +34,11 @@ node {
     }
     
     stage('APIOperationPhase'){
-	def api_action = "${API_ACTION}"
+	def api_action = "${ACTION}"
 	def publishEnv
 	def envFile = new File("${WORKSPACE}"+'/Env.json')
-	def jsonSlurper = new JsonSlurper()
-	def jsonObject = jsonSlurper.parse(envFile)
+	def jsonSlurperClassic = new JsonSlurperClassic()
+	def jsonObject = jsonSlurperClassic.parse(envFile)
         if("${TARGET_ENV}" == 'LOCALHOST')
         {
            publishEnv = jsonObject.local
