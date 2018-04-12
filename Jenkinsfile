@@ -1,18 +1,87 @@
-import groovy.io.FileType
 
-srcDir = '/JSONFiles'
+import groovy.io.FileType
+import groovy.json.JsonSlurper
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput 
 
 node {
     stage('Checkout'){
       checkout scm
     }
+
+    stage('CreateJSONFiles'){
+      
+	String name, context, description, ver, version, wsdlUri, endpoint, env
+	
+	name="${APP_NAME}"
+	context= "/"+name
+	description="${APP_DESCRIPTION}"
+	ver="${APP_VERSION}"
+	wsdlUri="${WSDL_LOC}"
+	endpoint="${ENDPOINT}"
+	env="${TARGET_ENV}"
+	workspace= "${WORKSPACE}"
+	pathToTemplate= workspace + "/ApiTemplate.json"
+	pathToApiMetadata= workspace + name +".json"
+
+	version=env + "-" + ver
+	def inputFile = new File(pathToTemplate) 
+
+	def jsonSlurper = new JsonSlurper()
+	def jsonObject = jsonSlurper.parse(inputFile)
+
+	println "Object.name -> [" + jsonObject.name + "]"
+	jsonObject.name = name
+	jsonObject.context = context
+	jsonObject.description = description
+	jsonObject.version = version
+	jsonObject.wsdlUri= wsdlUri
+	
+	println "Modified.name -> [" + jsonObject.name + "]"
+
+	println " "
+
+	println "ENDPOINTCONFIG -> [" + jsonObject.endpointConfig + "]"
+	
+	println " "
+	
+	def endp = jsonSlurper.parseText(jsonObject.endpointConfig)
+	endp.production_endpoints.url=endpoint
+	String endpointString = JsonOutput.toJson(endp)
+
+	jsonObject.endpointConfig = endpointString
+	
+	new File(pathToApiMetadata).write(new JsonBuilder(jsonObject).toPrettyString())
+
+    }
     
     stage('CreateAndUpdateAPI'){
-			def api_status = "${API_STATUS}"
-			
+	def api_status = "${API_STATUS}"
+	def publishEnv
+	def envFile = new File("${WORKSPACE}"+'/Env.json')
+	def jsonSlurper = new JsonSlurper()
+	def jsonObject = jsonSlurper.parse(envFile)
+        if("${TARGET_ENV}" == 'LOCALHOST')
+        {
+           publishEnv = jsonObject.local
+        }
+        if("${TARGET_ENV}" == 'DEV')
+        {
+           publishEnv = jsonObject.dev
+        }
+        if("${TARGET_ENV}" == 'TEST')
+        {
+           publishEnv = jsonObject.test
+        }
+        if("${TARGET_ENV}" == 'PROD')
+        {
+           publishEnv = jsonObject.prod
+        }
+                        
                         if( api_status == 'New') {	
 				sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
-				cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
+                                echo "{$publishEnv}"
+				cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://"{$publishEnv}":9443/client-registration/v0.11/register | jq -r \'.clientId\')
 				cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
 				encodeClient="$(echo -n $cid:$cs | base64)"
