@@ -20,7 +20,7 @@
    "visibility": "PUBLIC",
    "visibleRoles": [],
    "visibleTenants": [],
-   "endpointConfig": "{\"production_endpoints\":{\"url\":\"back-end endpoint",\"endpoint_type\":\"address\",\"template_not_supported\":false},\"endpoint_type\":\"address\"}",
+   "endpointConfig": "{\"production_endpoints\":{\"url\":\"back-end endpoint\",\"endpoint_type\":\"address\",\"template_not_supported\":false},\"endpoint_type\":\"address\"}",
    "endpointSecurity": null,
    "gatewayEnvironments": "Production and Sandbox",
    "sequences": [],
