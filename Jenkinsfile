@@ -1,4 +1,3 @@
-
 import groovy.io.FileType
 import groovy.json.JsonSlurper
 import groovy.json.JsonBuilder
@@ -55,7 +54,8 @@ node {
         {
            publishEnv = jsonObject.prod
         }
-                        
+        println  publishEnv
+               
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		echo "{$publishEnv}"
