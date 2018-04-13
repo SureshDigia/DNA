@@ -56,7 +56,7 @@ node {
         build = null //Reset state in order to avoid java.io.NotSerializableException.
         println "${API_DESCRIPTION}"
 
-	if( api_action.toLowerCase() == 'new') {	
+	if( api_action.toLowerCase().equals('new')) {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
