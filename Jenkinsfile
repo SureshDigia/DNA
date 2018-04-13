@@ -50,7 +50,7 @@ node {
 	
 	def build = currentBuild.getRawBuild();
 	build.replaceAction(new ParametersAction(npl))
-
+        build = null //Reset state in order to avoid java.io.NotSerializableException.
         println "${API_DESCRIPTION}"
 
 	if( api_action == 'New') {	
@@ -141,6 +141,5 @@ node {
                 '''
 
         }
-        build = null //Reset state in order to avoid java.io.NotSerializableException.
     }
 }
