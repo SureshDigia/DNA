@@ -12,7 +12,7 @@ node {
  
  def file = new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json")
  
- if("${ACTION}".toLowerCase()!='delete' || ("${ACTION}".toLowerCase()=='delete' && !file.exists())) {
+ if(!"${ACTION}".toLowerCase().equals('delete') || ("${ACTION}".toLowerCase().equals('delete') && !file.exists())) {
         stage('CreateMetadataPhase'){     
 	String context, versionWithEnv	
 	context= "/"+"${API_NAME}"
@@ -83,7 +83,7 @@ node {
 		'''
           }
 
-        if( api_action.toLowerCase() == 'update') {	
+        if( api_action.toLowerCase().equals('update')) {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
@@ -114,7 +114,7 @@ node {
 		'''
         }
 
-        if( api_action.toLowerCase() == 'delete') {	
+        if( api_action.toLowerCase().equals('delete')) {	
 		sh '''echo "**********************************************       Deleting API ${delApi}"    
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
