@@ -10,8 +10,7 @@ node {
       checkout scm
     }
 
-    stage('CreateMetadataPhase'){
-      
+    stage('CreateMetadataPhase'){     
 	String context, versionWithEnv	
 	context= "/"+"${API_NAME}"
 	pathToTemplate= "${WORKSPACE}" + "/ApiTemplate.json"
@@ -36,20 +35,18 @@ node {
     
     stage('APIOperationPhase'){
 	def api_action = "${ACTION}"
-
         def props = readJSON file: "${WORKSPACE}"+'/Env.json'
         def envPublish = props['local']
 
-	def newParameter = new StringParameterValue('HOST', envPublish)
+	def newParameter = new StringParameterValue('TARGET_ENV', envPublish)
 	def build = currentBuild.getRawBuild();
 	build.replaceAction(new ParametersAction(newParameter))
-	println 'Hiiiii'
-	println "${HOST}"
-        build = null
+        build = null //Reset state in order to avoid java.io.NotSerializableException.
+
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
-		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
-		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
+		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
+		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
 		encodeClient="$(echo -n $cid:$cs | base64)"
 		tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://localhost:8243/token | jq -r \'.access_token\')
