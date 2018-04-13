@@ -42,7 +42,7 @@ node {
 	def newParameter = new StringParameterValue('TARGET_ENV', envPublish)
 	def build = currentBuild.getRawBuild();
 	build.replaceAction(new ParametersAction(newParameter))
-        build = null //Reset state in order to avoid java.io.NotSerializableException.
+
         println "${API_NAME}"
 
 	if( api_action == 'New') {	
@@ -131,6 +131,8 @@ node {
 		echo "**********************************************       API $delApi deleted successfully"
 		fi
                 '''
+
         }
+        build = null //Reset state in order to avoid java.io.NotSerializableException.
     }
 }
