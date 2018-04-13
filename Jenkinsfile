@@ -39,9 +39,17 @@ node {
         def envPublish = props["${TARGET_ENV}".toLowerCase()]
         println "${API_NAME}"
 
-	def newParameter = new StringParameterValue('TARGET_ENV', envPublish)
+	def npl = new ArrayList<StringParameterValue>()
+	npl.add(new StringParameterValue('TARGET_ENV', envPublish))
+	npl.add(new StringParameterValue('API_NAME', "${API_NAME}"))
+	npl.add(new StringParameterValue('ACTION', "${ACTION}"))
+	npl.add(new StringParameterValue('API_DESCRIPTION', "${API_DESCRIPTION}"))
+	npl.add(new StringParameterValue('API_VERSION', "${API_VERSION}"))
+	npl.add(new StringParameterValue('WSDL_LOC', "${WSDL_LOC}"))
+	npl.add(new StringParameterValue('ENDPOINT', "${ENDPOINT}"))
+	
 	def build = currentBuild.getRawBuild();
-	build.replaceAction(new ParametersAction(newParameter))
+	build.replaceAction(new ParametersAction(npl))
 
         println "${API_DESCRIPTION}"
 
