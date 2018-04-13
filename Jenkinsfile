@@ -35,27 +35,9 @@ node {
     
     stage('APIOperationPhase'){
 	def api_action = "${ACTION}"
-	def publishEnv
-	def envFile = new File("${WORKSPACE}"+'/Env.json')
-	def jsonSlurperClassic = new JsonSlurperClassic()
-	def jsonObject = jsonSlurperClassic.parse(envFile)
-        if("${TARGET_ENV}" == 'LOCALHOST')
-        {
-           publishEnv = jsonObject.local
-        }
-        if("${TARGET_ENV}" == 'DEV')
-        {
-           publishEnv = jsonObject.dev
-        }
-        if("${TARGET_ENV}" == 'TEST')
-        {
-           publishEnv = jsonObject.test
-        }
-        if("${TARGET_ENV}" == 'PROD')
-        {
-           publishEnv = jsonObject.prod
-        }
-        println  publishEnv
+
+        def props = readJSON file: "${WORKSPACE}"+'/Env.json'
+        println props['local']
                
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
