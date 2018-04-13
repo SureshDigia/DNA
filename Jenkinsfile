@@ -35,7 +35,7 @@ node {
 	jsonObject.endpointConfig = endpointString	
 	new File(pathToApiMetadata).write(new JsonBuilder(jsonObject).toPrettyString())
     }
-  } else {    
+  }   
         stage('APIOperationPhase'){
 	def api_action = "${ACTION}"
         def props = readJSON file: "${WORKSPACE}"+'/Env.json'
@@ -56,7 +56,7 @@ node {
         build = null //Reset state in order to avoid java.io.NotSerializableException.
         println "${API_DESCRIPTION}"
 
-	if( api_action == 'New') {	
+	if( api_action.toLowerCase() == 'new') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
@@ -83,7 +83,7 @@ node {
 		'''
           }
 
-        if( api_action == 'Update') {	
+        if( api_action.toLowerCase() == 'update') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
@@ -114,7 +114,7 @@ node {
 		'''
         }
 
-        if( api_action == 'Delete') {	
+        if( api_action.toLowerCase() == 'delete') {	
 		sh '''echo "**********************************************       Deleting API ${delApi}"    
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
@@ -143,5 +143,4 @@ node {
                 '''
         }
     }
-  }
 }
