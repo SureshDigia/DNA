@@ -43,6 +43,7 @@ node {
 	def newParameter = new StringParameterValue('HOST', envPublish)
 	def build = currentBuild.getRawBuild();
 	build.replaceAction(new ParametersAction(newParameter))
+	println 'Hiiiii'
 	println "${HOST}"
 
 	if( api_action == 'New') {	
