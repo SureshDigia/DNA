@@ -10,7 +10,8 @@ node {
       checkout scm
     }
 
-    stage('CreateMetadataPhase'){     
+ if("${ACTION}".toLowerCase()!='delete' ) {
+        stage('CreateMetadataPhase'){     
 	String context, versionWithEnv	
 	context= "/"+"${API_NAME}"
 	pathToTemplate= "${WORKSPACE}" + "/ApiTemplate.json"
@@ -32,8 +33,8 @@ node {
 	jsonObject.endpointConfig = endpointString	
 	new File(pathToApiMetadata).write(new JsonBuilder(jsonObject).toPrettyString())
     }
-    
-    stage('APIOperationPhase'){
+ } else {    
+        stage('APIOperationPhase'){
 	def api_action = "${ACTION}"
         def props = readJSON file: "${WORKSPACE}"+'/Env.json'
         def envPublish = props["${TARGET_ENV}".toLowerCase()]
@@ -111,7 +112,6 @@ node {
 		'''
         }
 
-
         if( api_action == 'Delete') {	
 		sh '''echo "**********************************************       Deleting API ${delApi}"    
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
@@ -139,7 +139,7 @@ node {
 		echo "**********************************************       API $delApi deleted successfully"
 		fi
                 '''
-
         }
     }
+  }
 }
