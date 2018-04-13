@@ -36,7 +36,7 @@ node {
     stage('APIOperationPhase'){
 	def api_action = "${ACTION}"
         def props = readJSON file: "${WORKSPACE}"+'/Env.json'
-        def envPublish = props['local']
+        def envPublish = props["${TARGET_ENV}".toLowerCase()]
 
 	def newParameter = new StringParameterValue('TARGET_ENV', envPublish)
 	def build = currentBuild.getRawBuild();
