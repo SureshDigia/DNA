@@ -9,8 +9,10 @@ node {
     stage('CheckoutPhase'){
       checkout scm
     }
-
- if("${ACTION}".toLowerCase()!='delete' ) {
+ 
+ def file = new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json")
+ 
+ if("${ACTION}".toLowerCase()!='delete' || ("${ACTION}".toLowerCase()=='delete' && !file.exists())) {
         stage('CreateMetadataPhase'){     
 	String context, versionWithEnv	
 	context= "/"+"${API_NAME}"
@@ -33,7 +35,7 @@ node {
 	jsonObject.endpointConfig = endpointString	
 	new File(pathToApiMetadata).write(new JsonBuilder(jsonObject).toPrettyString())
     }
- } else {    
+  } else {    
         stage('APIOperationPhase'){
 	def api_action = "${ACTION}"
         def props = readJSON file: "${WORKSPACE}"+'/Env.json'
