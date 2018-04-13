@@ -43,7 +43,7 @@ node {
 	def build = currentBuild.getRawBuild();
 	build.replaceAction(new ParametersAction(newParameter))
 
-        println "${API_NAME}"
+        println "${API_DESCRIPTION}"
 
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
