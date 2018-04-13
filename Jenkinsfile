@@ -42,7 +42,7 @@ node {
 	def build = currentBuild.getRawBuild();
 	build.replaceAction(new ParametersAction(newParameter))
         build = null //Reset state in order to avoid java.io.NotSerializableException.
-        println ${API_NAME}
+        println "${API_NAME}"
 
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
