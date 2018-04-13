@@ -52,7 +52,7 @@ node {
 		tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://${TARGET_ENV}:8243/token | jq -r \'.access_token\')
 
 		echo "**************************      CREATING API      ******************************"
-		curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}"/${API_NAME}.json" https://${TARGET_ENV}:9443/api/am/publisher/v0.11/apis
+		curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}/${API_NAME}.json https://${TARGET_ENV}:9443/api/am/publisher/v0.11/apis
 		echo "**************************      API CREATED    ******************************"
 
 		echo "**************************      PUBLISHING API      ******************************"
