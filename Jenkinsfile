@@ -38,7 +38,9 @@ node {
 
         def props = readJSON file: "${WORKSPACE}"+'/Env.json'
         def envPublish = props['local']
-               
+
+        sh echo "$envPublish" 
+       
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		echo "$envPublish"
