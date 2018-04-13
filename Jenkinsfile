@@ -2,7 +2,8 @@ import groovy.io.FileType
 import groovy.json.JsonSlurper
 import groovy.json.JsonSlurperClassic
 import groovy.json.JsonBuilder
-import groovy.json.JsonOutput 
+import groovy.json.JsonOutput
+import hudson.model.* 
 
 node {
     stage('CheckoutPhase'){
@@ -39,12 +40,16 @@ node {
         def props = readJSON file: "${WORKSPACE}"+'/Env.json'
         def envPublish = props['local']
 
-        sh "echo $envPublish" 
-       
+	def newParameter = new StringParameterValue('HOST', envPublish)
+	build.replaceAction(new ParametersAction(newParameter))
+	println "${HOST}"
+
+        sh "echo $envPublish"
+
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		echo "$envPublish"
-		"echo $envPublish"
+
 		echo '$envPublish'
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://"$envPublish":9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://"$envPublish":9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
