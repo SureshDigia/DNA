@@ -41,7 +41,6 @@ node {
 	def newParameter = new StringParameterValue('TARGET_ENV', envPublish)
 	def build = currentBuild.getRawBuild();
 	build.replaceAction(new ParametersAction(newParameter))
-        build = null //Reset state in order to avoid java.io.NotSerializableException.
 
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
@@ -52,7 +51,7 @@ node {
 		tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://${TARGET_ENV}:8243/token | jq -r \'.access_token\')
 
 		echo "**************************      CREATING API      ******************************"
-		curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}/${API_NAME} https://${TARGET_ENV}:9443/api/am/publisher/v0.11/apis
+		curl -k -H "Authorization: Bearer $tokenCreate" -H "Content-Type: application/json" -X POST -d @${WORKSPACE}/${API_NAME}.json https://${TARGET_ENV}:9443/api/am/publisher/v0.11/apis
 		echo "**************************      API CREATED    ******************************"
 
 		echo "**************************      PUBLISHING API      ******************************"
@@ -130,6 +129,7 @@ node {
 		fi
                 '''
         }
+        build = null //Reset state in order to avoid java.io.NotSerializableException.
 
     }
 }
