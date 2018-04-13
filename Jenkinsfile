@@ -45,8 +45,6 @@ node {
 	build.replaceAction(new ParametersAction(newParameter))
 	println "${HOST}"
 
-        sh "echo $envPublish"
-
 	if( api_action == 'New') {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://localhost:9443/client-registration/v0.11/register | jq -r \'.clientId\')
