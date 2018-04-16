@@ -12,7 +12,7 @@ node {
  
  def file = new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json")
  
- if(!"${ACTION}".toLowerCase().equals('delete') || ("${ACTION}".toLowerCase().equals('delete') && !file.exists())) {
+ if(!"${ACTION}".toLowerCase().equals('delete')) {
         stage('CreateMetadataPhase'){     
 	String context, versionWithEnv	
 	context= "/"+"${API_NAME}"
@@ -49,18 +49,15 @@ node {
 	npl.add(new StringParameterValue('API_DESCRIPTION', "${API_DESCRIPTION}"))
 	npl.add(new StringParameterValue('API_VERSION', "${API_VERSION}"))
 	npl.add(new StringParameterValue('WSDL_LOC', "${WSDL_LOC}"))
-	npl.add(new StringParameterValue('ENDPOINT', "${ENDPOINT}"))
-	
-	//def build = currentBuild.getRawBuild();
+	npl.add(new StringParameterValue('ENDPOINT', "${ENDPOINT}"))	
 	currentBuild.getRawBuild().replaceAction(new ParametersAction(npl))
-        //build = null //Reset state in order to avoid java.io.NotSerializableException.
-        //println "${API_DESCRIPTION}"
 
 	if( api_action.toLowerCase().equals('new')) {	
-		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
-		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
-		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${TARGET_ENV}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
+		sh """echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
+		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${envPublish}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
+		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${envPublish}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
+                echo "${envPublish}"
 		encodeClient="$(echo -n $cid:$cs | base64)"
 		tokenCreate=$(curl -k -d "grant_type=password&username=admin&password=admin&scope=apim:api_create" -H "Authorization: Basic $encodeClient" https://${TARGET_ENV}:8243/token | jq -r \'.access_token\')
 
@@ -80,7 +77,7 @@ node {
 		apiIdForPublish="$(echo $match | jq -r \'.id\')"
 		curl -k -H "Authorization: Bearer $tokenPublish" -X POST "https://${TARGET_ENV}:9443/api/am/publisher/v0.11/apis/change-lifecycle?apiId=$apiIdForPublish&action=Publish"
 		echo "**************************      API PUBLISHED     ******************************"
-		'''
+		"""
           }
 
         if( api_action.toLowerCase().equals('update')) {	
