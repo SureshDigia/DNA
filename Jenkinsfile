@@ -51,10 +51,10 @@ node {
 	npl.add(new StringParameterValue('WSDL_LOC', "${WSDL_LOC}"))
 	npl.add(new StringParameterValue('ENDPOINT', "${ENDPOINT}"))
 	
-	def build = currentBuild.getRawBuild();
-	build.replaceAction(new ParametersAction(npl))
-        build = null //Reset state in order to avoid java.io.NotSerializableException.
-        println "${API_DESCRIPTION}"
+	//def build = currentBuild.getRawBuild();
+	currentBuild.getRawBuild().replaceAction(new ParametersAction(npl))
+        //build = null //Reset state in order to avoid java.io.NotSerializableException.
+        //println "${API_DESCRIPTION}"
 
 	if( api_action.toLowerCase().equals('new')) {	
 		sh '''echo "**********************************************       Creating clientId and cleintSecret for ADMIN"
