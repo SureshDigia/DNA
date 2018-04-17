@@ -53,7 +53,7 @@ node {
 	currentBuild.getRawBuild().replaceAction(new ParametersAction(npl))
 
 	if( api_action.toLowerCase().equals('new')) {	
-		sh """
+		sh '''
 		cid=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${envPublish}:9443/client-registration/v0.11/register | jq -r \'.clientId\')
 		cs=$(curl -k -X POST -H "Authorization: Basic YWRtaW46YWRtaW4=" -H "Content-Type: application/json" -d @payload.json https://${envPublish}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\')
 
@@ -76,7 +76,7 @@ node {
 		match="$(echo $apisList | jq  --arg creName "$newName" --arg creCon "$newContext" --arg creVer "$newVersion"  \'select((.name==$creName) and (.context==$creCon)  and (.version==$creVer))\')"
 		apiIdForPublish="$(echo $match | jq -r \'.id\')"
 		curl -k -H "Authorization: Bearer $tokenPublish" -X POST "https://${TARGET_ENV}:9443/api/am/publisher/v0.11/apis/change-lifecycle?apiId=$apiIdForPublish&action=Publish"
-		"""
+		'''
           }
 
         if( api_action.toLowerCase().equals('update')) {	
