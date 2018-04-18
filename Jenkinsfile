@@ -77,7 +77,7 @@ node {
 		   println "${API_NAME}"
                    println context
                    println versionWithEnv
-                   if("${API_NAME}".equals(objAPI.name.toString()) && context.equals(objAPI.context.toString()) && versionWithEnv.equals(objAPI.version.toString())){
+                   if("${API_NAME}".equals(objAPI.name.toString().trim()) && context.equals(objAPI.context.toString().trim()) && versionWithEnv.equals(objAPI.version.toString().trim())){
                      updateId =  objAPI.id
                      break
                    }
