@@ -68,7 +68,6 @@ node {
 	      def jsonProps = readJSON text: formattedJson
 	      int count = 0
 	      def updateId
-              println jsonProps
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
                    if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
@@ -96,7 +95,6 @@ node {
 	      def jsonProps = readJSON text: formattedJson
 	      int count = 0
 	      def deleteId
-              println jsonProps
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
                    if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
