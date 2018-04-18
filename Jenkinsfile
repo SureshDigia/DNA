@@ -101,7 +101,7 @@ node {
                    }
                    count++
               }
-            def deleteResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -X DELETE https://${envPublish}:9443/api/am/publisher/v0.11/apis/${deleteId}\", returnStdout: true)
+            def deleteResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -X DELETE https://${envPublish}:9443/api/am/publisher/v0.11/apis/${deleteId}", returnStdout: true)
         }
 
     }
