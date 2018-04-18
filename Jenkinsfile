@@ -75,7 +75,7 @@ node {
                    }
                    count++
               }
-	     def json = new JsonSlurper().parse("${WORKSPACE}" + "/" + "${API_NAME}" + ".json")
+	     def json = new JsonSlurper().parse(new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json"))
 	     json << ["id": updateId] // json.put('sig', '<value>')
 	     new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json").write(JsonOutput.toJson(json))
 	     println JsonOutput.toJson(json)
