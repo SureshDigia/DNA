@@ -70,7 +70,11 @@ node {
               println jsonProps
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
-                   if("${API_NAME}".equals(objAPI.name) && "/"+"${API_NAME}"+"/"+"${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.context) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version)){
+		   println objAPI
+		   println "${API_NAME}"
+                   println "/"+"${API_NAME}"
+                   println "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}"
+                   if("${API_NAME}".equals(objAPI.name) && "/"+"${API_NAME}".equals(objAPI.context) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version)){
                      updateId =  objAPI.id
                      break
                    }
