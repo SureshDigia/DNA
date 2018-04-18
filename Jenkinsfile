@@ -77,6 +77,10 @@ node {
                    }
                    count++
               }
+              if(updateId == null){
+		       println "Update failed.API ID missing from WSO2."
+		       sh "exit 1"
+	      }
 	     def json = new JsonSlurper().parse(new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json"))
 	     json << ["id": updateId]
 	     new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json").write(JsonOutput.toJson(json))
@@ -101,6 +105,10 @@ node {
                    }
                    count++
               }
+              if(deleteId == null){
+		       println "Delete failed.API ID missing from WSO2."
+		       sh "exit 1"
+	      }
             def deleteResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -X DELETE https://${envPublish}:9443/api/am/publisher/v0.11/apis/${deleteId}", returnStdout: true)
         }
 
