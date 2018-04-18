@@ -71,10 +71,12 @@ node {
               println jsonProps
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
-		   println objAPI
+		   println objAPI.name.toString()
+                   println objAPI.context.toString()
+                   println objAPI.version.toString()
 		   println "${API_NAME}"
-                   println "/"+"${API_NAME}"
-                   println "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}"
+                   println context
+                   println versionWithEnv
                    if("${API_NAME}".equals(objAPI.name.toString()) && context.equals(objAPI.context.toString()) && versionWithEnv.equals(objAPI.version.toString())){
                      updateId =  objAPI.id
                      break
