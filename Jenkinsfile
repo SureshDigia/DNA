@@ -61,7 +61,7 @@ node {
 		sh "curl -k -H \"Authorization: Bearer ${tokenPublish}\" -X POST \"https://${envPublish}:9443/api/am/publisher/v0.11/apis/change-lifecycle?apiId=${apiIDCreated}&action=Publish\""	 
        }
 
-        if( api_action.toLowerCase().equals('update')) {
+       if( api_action.toLowerCase().equals('update')) {
     	      def tokenView = sh(script:"curl -k -d \"grant_type=password&username=admin&password=admin&scope=apim:api_view\" -H \"Authorization: Basic ${encodeClient}\" https://${envPublish}:8243/token | jq -r \'.access_token\'", returnStdout: true)
               def apisList = "["+sh(script:"curl -k -H \"Authorization: Bearer ${tokenView}\" https://${envPublish}:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\'", returnStdout: true)+"]"
 	      def formattedJson = apisList.replaceAll("\n","").replaceAll("\r", "").replaceAll("\\}\\{","\\},\\{")
@@ -72,7 +72,6 @@ node {
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
                    if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
-                     println objAPI
                      updateId =  objAPI.id
                      break
                    }
@@ -85,6 +84,24 @@ node {
              json = null //Fix non serialazation exception.
 	     def updateResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -H \"Content-Type: application/json\" -X PUT -d @${WORKSPACE}/${API_NAME}.json https://${envPublish}:9443/api/am/publisher/v0.11/apis/${updateId}", returnStdout: true)
              println updateResponse
+        }
+      if( api_action.toLowerCase().equals('delete')) {
+    	      def tokenView = sh(script:"curl -k -d \"grant_type=password&username=admin&password=admin&scope=apim:api_view\" -H \"Authorization: Basic ${encodeClient}\" https://${envPublish}:8243/token | jq -r \'.access_token\'", returnStdout: true)
+              def apisList = "["+sh(script:"curl -k -H \"Authorization: Bearer ${tokenView}\" https://${envPublish}:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\'", returnStdout: true)+"]"
+	      def formattedJson = apisList.replaceAll("\n","").replaceAll("\r", "").replaceAll("\\}\\{","\\},\\{")
+	      def jsonProps = readJSON text: formattedJson
+	      int count = 0
+	      def deleteId
+              println jsonProps
+              while(count < jsonProps.size()) {
+                   def objAPI = readJSON text: jsonProps[count].toString()
+                   if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
+                     deleteId =  objAPI.id
+                     break
+                   }
+                   count++
+              }
+            def deleteResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreate}\" -X DELETE https://${envPublish}:9443/api/am/publisher/v0.11/apis/${deleteId}\", returnStdout: true)
         }
 
     }
