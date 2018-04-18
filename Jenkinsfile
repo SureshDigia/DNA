@@ -43,9 +43,9 @@ node {
         def cid_cs = cid.trim() + ":" + cs.trim()
         def encodeClient = cid_cs.bytes.encodeBase64().toString()
         def tokenCreate = sh(script:"curl -k -d \"grant_type=password&username=admin&password=admin&scope=apim:api_create\" -H \"Authorization: Basic ${encodeClient}\" https://${envPublish}:8243/token | jq -r \'.access_token\'", returnStdout: true)
+	def tokenCreateTrimmed = tokenCreate.trim()
 
 	if( api_action.toLowerCase().equals('new')) {	
-		def tokenCreateTrimmed = tokenCreate.trim()
 		def createResponse = sh(script: "curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -H \"Content-Type: application/json\" -X POST -d @${WORKSPACE}/${API_NAME}.json https://${envPublish}:9443/api/am/publisher/v0.11/apis", returnStdout: true)
                 println createResponse
 		def createResponseObj = readJSON text: createResponse
@@ -69,7 +69,7 @@ node {
 	      def updateId
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
-                   if("${API_NAME}".equals(objAPI.name) && "/"+"${API_NAME}".equals(objAPI.context) && "${TARGET_ENV}"+"-" +"${API_VERSION}".equals(objAPI.version)){
+                   if("${API_NAME}".equals(objAPI.name) && "/"+"${API_NAME}".equals(objAPI.context) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version)){
                      updateId =  objAPI.id
                      break
                    }
@@ -81,7 +81,7 @@ node {
 	     new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json").write(JsonOutput.toJson(json))
              json = null
 	     println JsonOutput.toJson(json)
-	     def updateResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreate}\" -H \"Content-Type: application/json\" -X PUT -d @${WORKSPACE}/${API_NAME}.json https://${envPublish}:9443/api/am/publisher/v0.11/apis/${updateId}", returnStdout: true)
+	     def updateResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -H \"Content-Type: application/json\" -X PUT -d @${WORKSPACE}/${API_NAME}.json https://${envPublish}:9443/api/am/publisher/v0.11/apis/${updateId}", returnStdout: true)
              println updateResponse
         }
 
