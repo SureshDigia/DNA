@@ -10,13 +10,14 @@ node {
       checkout scm
     } 
  
+ def context = "/"+"${API_NAME}"
+ def versionWithEnv= "${TARGET_ENV}".toLowerCase() + "-" + "${API_VERSION}"
+ 
  if(!"${ACTION}".toLowerCase().equals('delete')) {
-        stage('CreateMetadataPhase'){     
-	String context, versionWithEnv	
-	context= "/"+"${API_NAME}"
+        stage('CreateMetadataPhase'){     	
 	pathToTemplate= "${WORKSPACE}" + "/ApiTemplate.json"
 	pathToApiMetadata= "${WORKSPACE}" + "/" + "${API_NAME}" + ".json"
-	versionWithEnv= "${TARGET_ENV}".toLowerCase() + "-" + "${API_VERSION}"
+	
 	def inputFile = new File(pathToTemplate) 
 	def jsonSlurper = new JsonSlurper()
 	def jsonObject = jsonSlurper.parse(inputFile)
@@ -74,7 +75,7 @@ node {
 		   println "${API_NAME}"
                    println "/"+"${API_NAME}"
                    println "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}"
-                   if("${API_NAME}".equals(objAPI.name.toString()) && "/"+"${API_NAME}".equals(objAPI.context.toString()) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version.toString())){
+                   if("${API_NAME}".equals(objAPI.name.toString()) && context.equals(objAPI.context.toString()) && versionWithEnv.equals(objAPI.version.toString())){
                      updateId =  objAPI.id
                      break
                    }
