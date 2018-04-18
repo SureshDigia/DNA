@@ -74,7 +74,7 @@ node {
 		   println "${API_NAME}"
                    println "/"+"${API_NAME}"
                    println "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}"
-                   if("${API_NAME}".equals(objAPI.name) && "/"+"${API_NAME}".equals(objAPI.context) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version)){
+                   if("${API_NAME}".equals(objAPI.name.toString()) && "/"+"${API_NAME}".equals(objAPI.context.toString()) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version.toString())){
                      updateId =  objAPI.id
                      break
                    }
