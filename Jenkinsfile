@@ -71,24 +71,18 @@ node {
               println jsonProps
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
-		   println objAPI.name.toString()
-                   println objAPI.context.toString()
-                   println objAPI.version.toString()
-		   println "${API_NAME}"
-                   println context
-                   println versionWithEnv
-                   if("${API_NAME}".equals(objAPI.name.toString().trim()) && context.equals(objAPI.context.toString().trim()) && versionWithEnv.equals(objAPI.version.toString().trim())){
+                   if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
+                     println objAPI
                      updateId =  objAPI.id
                      break
                    }
                    count++
               }
-             println updateId
 	     def json = new JsonSlurper().parse(new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json"))
 	     json << ["id": updateId]
 	     new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json").write(JsonOutput.toJson(json))
 	     println JsonOutput.toJson(json)
-             json = null
+             json = null //Fix non serialazation exception.
 	     def updateResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -H \"Content-Type: application/json\" -X PUT -d @${WORKSPACE}/${API_NAME}.json https://${envPublish}:9443/api/am/publisher/v0.11/apis/${updateId}", returnStdout: true)
              println updateResponse
         }
