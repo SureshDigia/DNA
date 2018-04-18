@@ -75,9 +75,11 @@ node {
                    }
                    count++
               }
+             println updateId
 	     def json = new JsonSlurper().parse(new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json"))
 	     json << ["id": updateId] // json.put('sig', '<value>')
 	     new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json").write(JsonOutput.toJson(json))
+             json = null
 	     println JsonOutput.toJson(json)
 	     def updateResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreate}\" -H \"Content-Type: application/json\" -X PUT -d @${WORKSPACE}/${API_NAME}.json https://${TARGET_ENV}:9443/api/am/publisher/v0.11/apis/${updateId}", returnStdout: true)
              println updateResponsel
