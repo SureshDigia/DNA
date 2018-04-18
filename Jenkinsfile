@@ -69,7 +69,7 @@ node {
 	      def updateId
               while(count < jsonProps.size()) {
                    def objAPI = readJSON text: jsonProps[count].toString()
-                   if("${API_NAME}".equals(objAPI.name) && "/"+"${API_NAME}".equals(objAPI.context) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version)){
+                   if("${API_NAME}".equals(objAPI.name) && "/"+"${API_NAME}"+"/"+"${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.context) && "${TARGET_ENV}".toLowerCase()+"-" +"${API_VERSION}".equals(objAPI.version)){
                      updateId =  objAPI.id
                      break
                    }
@@ -77,10 +77,10 @@ node {
               }
              println updateId
 	     def json = new JsonSlurper().parse(new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json"))
-	     json << ["id": updateId] // json.put('sig', '<value>')
+	     json << ["id": updateId]
 	     new File("${WORKSPACE}" + "/" + "${API_NAME}" + ".json").write(JsonOutput.toJson(json))
-             json = null
 	     println JsonOutput.toJson(json)
+             json = null
 	     def updateResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -H \"Content-Type: application/json\" -X PUT -d @${WORKSPACE}/${API_NAME}.json https://${envPublish}:9443/api/am/publisher/v0.11/apis/${updateId}", returnStdout: true)
              println updateResponse
         }
