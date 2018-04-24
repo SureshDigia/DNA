@@ -38,7 +38,7 @@ node {
         stage('APIOperationPhase'){
 	String api_action = "${ACTION}"
         //def envProps = readJSON file: "${WORKSPACE}"+'/Env.json'
-        def envProps = new JsonSlurper().parse("${WORKSPACE}"+'/Env.json')
+        def envProps = new JsonSlurper().parse(new File("${WORKSPACE}"+'/Env.json'))
         String envPublish = envProps["${TARGET_ENV}".toLowerCase()]
         String cid = sh(script: "curl -k -X POST -H \"Authorization: Basic YWRtaW46YWRtaW4=\" -H \"Content-Type: application/json\" -d @payload.json https://${envPublish}:9443/client-registration/v0.11/register | jq -r \'.clientId\'",      returnStdout: true)
         String cs  = sh(script: "curl -k -X POST -H \"Authorization: Basic YWRtaW46YWRtaW4=\" -H \"Content-Type: application/json\" -d @payload.json https://${envPublish}:9443/client-registration/v0.11/register | jq -r \'.clientSecret\'", returnStdout: true)
