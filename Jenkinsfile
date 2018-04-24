@@ -87,6 +87,7 @@ node {
                    }
                    count++
               }
+              jsonProps = null
               if(updateId == null){
 		       println "Update failed.API ID missing from WSO2."
 		       sh "exit 1"
@@ -98,8 +99,7 @@ node {
              json = null //Fix non serialazation exception.
 	     def updateResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -H \"Content-Type: application/json\" -X PUT -d @${pathToApiMetadata} https://${envPublish}:9443/api/am/publisher/v0.11/apis/${updateId}", returnStdout: true)
              println updateResponse
-             jsonProps = null
-             objAPI = null
+             
         }
 
       if( api_action.toLowerCase().equals('delete')) {
@@ -120,13 +120,12 @@ node {
                    }
                    count++
               }
+              jsonProps = null
               if(deleteId == null){
 		       println "Delete failed.API ID missing from WSO2."
 		       sh "exit 1"
 	      }
             def deleteResponse = sh(script:"curl -k -H \"Authorization: Bearer ${tokenCreateTrimmed}\" -X DELETE https://${envPublish}:9443/api/am/publisher/v0.11/apis/${deleteId}", returnStdout: true)
-            jsonProps = null
-            objAPI = null
         }
     }
 }
