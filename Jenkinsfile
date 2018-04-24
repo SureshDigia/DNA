@@ -73,7 +73,8 @@ node {
               println formattedJson
 	      //def jsonProps = readJSON text: formattedJson
               def jsonProps = new JsonSlurper().parseText(formattedJson)
-              println jsonProps[0]
+              println jsonProps[0].id
+              println jsonProps[0].name
 	      int count = 0
 	      String updateId
               while(count < jsonProps.size()) {
