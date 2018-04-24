@@ -79,9 +79,10 @@ node {
 	      String updateId
               while(count < jsonProps.size()) {
                    //def objAPI = readJSON text: jsonProps[count].toString()
-	           def objAPI = new JsonSlurper().parseText(jsonProps[count].toString())
-                   if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
-                     updateId =  objAPI.id
+	           //def objAPI = new JsonSlurper().parseText(jsonProps[count].toString())
+                   //if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
+                   if("${API_NAME}".toString().equals(jsonProps[count].name) && context.equals(jsonProps[count].context) && versionWithEnv.equals(jsonProps[count].version)){
+                     updateId =  jsonProps[count].id
                      break
                    }
                    count++
@@ -111,9 +112,10 @@ node {
 	      String deleteId
               while(count < jsonProps.size()) {
                    //def objAPI = readJSON text: jsonProps[count].toString()
-                   def objAPI = new JsonSlurper().parseText(jsonProps[count].toString())
-                   if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
-                     deleteId =  objAPI.id
+                   //def objAPI = new JsonSlurper().parseText(jsonProps[count].toString())
+                   //if("${API_NAME}".toString().equals(objAPI.name) && context.equals(objAPI.context) && versionWithEnv.equals(objAPI.version)){
+		   if("${API_NAME}".toString().equals(jsonProps[count].name) && context.equals(jsonProps[count].context) && versionWithEnv.equals(jsonProps[count].version)){
+                     deleteId =  jsonProps[count].id
                      break
                    }
                    count++
