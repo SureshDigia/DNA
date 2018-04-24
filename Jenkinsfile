@@ -70,8 +70,10 @@ node {
     	      String tokenView = sh(script:"curl -k -d \"grant_type=password&username=admin&password=admin&scope=apim:api_view\" -H \"Authorization: Basic ${encodeClient}\" https://${envPublish}:8243/token | jq -r \'.access_token\'", returnStdout: true)
               def apisList = "["+sh(script:"curl -k -H \"Authorization: Bearer ${tokenView}\" https://${envPublish}:9443/api/am/publisher/v0.11/apis | jq \'.list\' | jq  \'.[] | {id: .id , name: .name , context: .context , version: .version}\'", returnStdout: true)+"]"
 	      def formattedJson = apisList.replaceAll("\n","").replaceAll("\r", "").replaceAll("\\}\\{","\\},\\{")
+              println formattedJson
 	      //def jsonProps = readJSON text: formattedJson
               def jsonProps = new JsonSlurper().parseText(formattedJson)
+              println jsonProps
 	      int count = 0
 	      String updateId
               while(count < jsonProps.size()) {
